@@ -25,7 +25,19 @@
 
 ---
 
-## 🔧 Technical Details
+## 📚 Sources Used
+
+### **Students Data from Slide 2:**
+- [Flash 1 Report 2081 (2024)](https://giwmscdntwo.gov.np/media/pdf_upload/Flash%201%20Report%202081%20%282024%29_hzq1zgz.pdf)
+- [Nepal's persistent digital divide: From high penetration to inclusion](https://thehimalayantimes.com/opinion/nepals-persistent-digital-divide-from-high-penetration-to-inclusion?utm_source=chatgpt.com)
+- [Shadow Education: A Role of Private Tutoring in Learning](https://www.researchgate.net/publication/339123325_Shadow_Education_A_Role_of_Private_Tutoring_in_Learning)
+
+### **Educational Materials used for Knowledge base:**
+- [Ministry of Education CDC Library](http://lib.moecdc.gov.np/catalog/opac_css/index.php?lvl=cmspage&pageid=6&id_rubrique=105)
+
+---
+
+## �� Technical Details
 
 ### **Architecture Overview**
 ```

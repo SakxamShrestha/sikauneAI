@@ -147,7 +147,7 @@ const ChatInterface = ({ selectedGrade, selectedSubject }) => {
           </div>
           <button
             onClick={startNewThread}
-            className={`mt-3 w-full flex items-center gap-2 px-3 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors ${!showThreads ? 'justify-center' : ''}`}
+            className="mt-3 w-full flex items-center justify-center gap-2 px-3 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
           >
             <Plus size={16} />
             {showThreads && <span>New Chat</span>}
