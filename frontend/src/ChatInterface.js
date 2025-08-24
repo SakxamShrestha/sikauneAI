@@ -1,6 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Send, MessageSquare, Trash2, Plus } from 'lucide-react';
 import axios from 'axios';
+import ReactMarkdown from 'react-markdown';
+import 'katex/dist/katex.min.css';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
 
 const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
 
@@ -123,10 +127,10 @@ const ChatInterface = ({ selectedGrade, selectedSubject }) => {
     return new Date(timestamp).toLocaleString();
   };
 
-  return (
-    <div className="flex h-[calc(100vh-200px)] bg-white rounded-2xl shadow-xl border border-gray-200">
+    return (
+    <div className="flex chat-container bg-white rounded-2xl shadow-xl border border-gray-200">
       {/* Sidebar */}
-      <div className={`${showThreads ? 'w-80' : 'w-16'} bg-gray-50 border-r border-gray-200 transition-all duration-300 rounded-l-2xl`}>
+      <div className={`${showThreads ? 'w-80' : 'w-16'} bg-gray-50 border-r border-gray-200 transition-all duration-300 rounded-l-2xl sidebar-container`}>
         <div className="p-4 border-b border-gray-200">
           <div className="flex items-center justify-between">
             <h2 className={`font-semibold text-gray-800 ${!showThreads ? 'hidden' : ''}`}>
@@ -149,44 +153,46 @@ const ChatInterface = ({ selectedGrade, selectedSubject }) => {
         </div>
 
         {showThreads && (
-          <div className="flex-1 overflow-y-auto p-4">
-            {threads.length === 0 ? (
-              <p className="text-gray-500 text-sm">No conversations yet</p>
-            ) : (
-              <div className="space-y-2">
-                {threads.map((thread) => (
-                  <div
-                    key={thread.id}
-                    className={`p-3 rounded-lg cursor-pointer transition-colors ${
-                      currentThread === thread.id
-                        ? 'bg-indigo-100 border border-indigo-200'
-                        : 'hover:bg-gray-100'
-                    }`}
-                  >
+          <div className="threads-list">
+            <div className="threads-scrollable threads-sidebar">
+              {threads.length === 0 ? (
+                <p className="text-gray-500 text-sm">No conversations yet</p>
+              ) : (
+                <div className="space-y-2">
+                  {threads.map((thread) => (
                     <div
-                      onClick={() => loadMessages(thread.id)}
-                      className="flex-1"
+                      key={thread.id}
+                      className={`thread-item p-3 rounded-lg cursor-pointer transition-colors ${
+                        currentThread === thread.id
+                          ? 'bg-indigo-100 border border-indigo-200'
+                          : 'hover:bg-gray-100'
+                      }`}
                     >
-                      <p className="text-sm font-medium text-gray-800 line-clamp-2">
-                        {thread.title || thread.last_message}
-                      </p>
-                      <p className="text-xs text-gray-500 mt-1">
-                        {formatTimestamp(thread.updated_at)}
-                      </p>
+                      <div
+                        onClick={() => loadMessages(thread.id)}
+                        className="flex-1"
+                      >
+                        <p className="text-sm font-medium text-gray-800 line-clamp-2">
+                          {thread.title || thread.last_message}
+                        </p>
+                        <p className="text-xs text-gray-500 mt-1">
+                          {formatTimestamp(thread.updated_at)}
+                        </p>
+                      </div>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          deleteThread(thread.id);
+                        }}
+                        className="p-1 hover:bg-red-100 rounded mt-2 transition-colors"
+                      >
+                        <Trash2 size={14} className="text-red-500" />
+                      </button>
                     </div>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        deleteThread(thread.id);
-                      }}
-                      className="p-1 hover:bg-red-100 rounded mt-2 transition-colors"
-                    >
-                      <Trash2 size={14} className="text-red-500" />
-                    </button>
-                  </div>
-                ))}
-              </div>
-            )}
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         )}
       </div>
@@ -224,7 +230,18 @@ const ChatInterface = ({ selectedGrade, selectedSubject }) => {
                       : 'bg-gray-100 border border-gray-200'
                   }`}
                 >
-                  <p className="whitespace-pre-wrap">{message.content}</p>
+                  {message.sender === 'assistant' ? (
+                    <div className="prose prose-sm max-w-none markdown-content">
+                      <ReactMarkdown
+                        remarkPlugins={[remarkMath]}
+                        rehypePlugins={[rehypeKatex]}
+                      >
+                        {message.content}
+                      </ReactMarkdown>
+                    </div>
+                  ) : (
+                    <p className="whitespace-pre-wrap">{message.content}</p>
+                  )}
                   
                   {message.sources && message.sources.length > 0 && (
                     <div className="mt-3 pt-3 border-t border-gray-200">

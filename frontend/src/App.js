@@ -80,7 +80,18 @@ function App() {
                 }}
                 className="flex items-center space-x-3 hover:opacity-80 transition-opacity cursor-pointer"
               >
-                <Brain className="h-8 w-8 text-indigo-600" />
+                {/* Replace this src with your actual logo file path */}
+                <img 
+                  src="/logo.png" 
+                  alt="MeroGuru Logo" 
+                  className="logo-image"
+                  onError={(e) => {
+                    // Fallback to Brain icon if logo fails to load
+                    e.target.style.display = 'none';
+                    e.target.nextSibling.style.display = 'block';
+                  }}
+                />
+                <Brain className="h-8 w-8 text-indigo-600" style={{display: 'none'}} />
                 <h1 className="text-2xl font-bold text-gray-900">MeroGuru</h1>
               </button>
             </div>

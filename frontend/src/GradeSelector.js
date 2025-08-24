@@ -48,9 +48,21 @@ const GradeSelector = ({ onGradeSubjectSelect }) => {
       {/* Header */}
       <div className="text-center mb-12">
         <div className="flex justify-center mb-4">
-          <div className="p-4 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full">
-            <Brain className="h-12 w-12 text-white" />
-          </div>
+          <img 
+            src="/logo.png" 
+            alt="MeroGuru Logo" 
+            className="homepage-logo-simple"
+            onError={(e) => {
+              console.error('Logo failed to load:', e.target.src);
+              // Fallback to Brain icon if logo fails to load
+              e.target.style.display = 'none';
+              e.target.nextSibling.style.display = 'block';
+            }}
+            onLoad={(e) => {
+              console.log('Logo loaded successfully:', e.target.src);
+            }}
+          />
+          <Brain className="h-12 w-12 text-indigo-600" style={{display: 'none'}} />
         </div>
         <h1 className="text-4xl font-bold text-gray-900 mb-4">
           Welcome to MeroGuru
