@@ -43,7 +43,8 @@ const ChatInterface = ({ selectedGrade, selectedSubject }) => {
       const response = await axios.get(`${API_BASE_URL}/threads/${threadId}`);
       setMessages(response.data || []);
       setCurrentThread(threadId);
-      setShowThreads(false);
+      // Keep threads visible when switching conversations for better UX
+      setShowThreads(true);
     } catch (error) {
       console.error('Error loading messages:', error);
     }
@@ -99,7 +100,8 @@ const ChatInterface = ({ selectedGrade, selectedSubject }) => {
   const startNewThread = () => {
     setCurrentThread(null);
     setMessages([]);
-    setShowThreads(false);
+    // Keep threads visible when starting new thread
+    setShowThreads(true);
   };
 
   const deleteThread = async (threadId) => {
